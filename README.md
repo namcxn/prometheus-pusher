@@ -1,4 +1,4 @@
-# Prometheus Pusher to [Atlassian Status Page](statuspage.io)
+# Prometheus Pusher to [Atlassian Status Page](http://statuspage.io)
 
 # How to?
 - Build
@@ -16,6 +16,14 @@ go build
 - Config
 
 Copy [example](./config-example.yaml) to `config.yaml`
+
+Or use Env
+```
+SYSTEMMETRIC__PROM_URL: https://localhost
+SYSTEMMETRIC__PAGE_URL: https://api.statuspage.io
+SYSTEMMETRIC__PAGE_TOKEN: xxxxxxx-xxxx-xxxx-xxxx-xxxxxxe6ad2a
+SYSTEMMETRIC__PAGE_ID: xxxxxxxxx826
+```
 
 - Queries
 
