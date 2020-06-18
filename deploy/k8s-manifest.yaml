@@ -1,0 +1,67 @@
+apiVersion: v1
+data:
+  queries.yaml: |-
+    rqlrn2lqzgqn: |
+      histogram_quantile(
+      99,
+      sum by (le, ingress)(
+        rate(
+          nginx_ingress_controller_response_duration_seconds_bucket{
+            ingress =~ ".+"
+          }[1m]
+        )
+      )
+      ) * 1000
+kind: ConfigMap
+metadata:
+  name: prometheus-pusher-queries
+  namespace: default
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-pusher
+  namespace: default
+  labels:
+    app: prometheus-pusher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-pusher
+  template:
+    metadata:
+      labels:
+        app: prometheus-pusher
+    spec:
+      containers:
+        - image: prometheus-pusher:latest
+          imagePullPolicy: "Always"
+          name: prometheus-pusher
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          command:
+            - /app/prometheus-pusher
+          env:
+            - name: SYSTEMMETRIC__PROM_URL
+              value: xxxxxxxxx
+            - name: SYSTEMMETRIC__PAGE_URL
+              value: xxxxxxx
+            - name: SYSTEMMETRIC__PAGE_TOKEN
+              value: xxxxxxx
+            - name: SYSTEMMETRIC__PAGE_ID
+              value: xxxxxxx
+          volumeMounts:
+            - name: prometheus-pusher-queries-volumes
+              mountPath: /app/queries.yaml
+              subPath: queries.yaml
+              readOnly: true
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: prometheus-pusher-queries
+          name: prometheus-pusher-queries-volumes
+
