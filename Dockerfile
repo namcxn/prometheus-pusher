@@ -5,7 +5,9 @@ ADD . /app
 RUN go get
 RUN go build -o prometheus-pusher
 
-FROM alpine:latest
+FROM alpine:3.12
+
 WORKDIR /app
-COPY --from=builder /app/prometheus-pusher .
-CMD ["./prometheus-pusher"]
+COPY ./config-example.yaml /app/config.yaml
+COPY --from=builder /app/prometheus-pusher /app/prometheus-pusher
+CMD ["/app/prometheus-pusher"]
