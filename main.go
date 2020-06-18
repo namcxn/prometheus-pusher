@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/cxnam/prometheus-pusher/pkg/logger"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -20,7 +21,6 @@ import (
 	"github.com/prometheus/common/model"
 
 	"github.com/cxnam/prometheus-pusher/pkg/config"
-	"github.com/cxnam/prometheus-pusher/pkg/logger"
 )
 
 type queryConfig map[string]string
@@ -30,7 +30,7 @@ var (
 	metricInterval  = flag.Duration("i", 30*time.Second, "Metric push interval")
 
 	// logger     = log.With(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), "caller", log.DefaultCaller)
-        log = logger.GetLogger("push-status-page")
+	log = logger.GetLogger("push-status-page")
 	httpClient = &http.Client{}
 )
 
