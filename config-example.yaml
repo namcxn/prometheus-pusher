@@ -1,0 +1,5 @@
+systemmetric:
+  prom_url: "http://localhost:9090"
+  page_url: "https://api.statuspage.io"
+  page_token: "asdf912-47cd-4ddf-b69b-asf87182nfda"
+  page_id: "vvmxsdasdf123"

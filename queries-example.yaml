@@ -1,0 +1,12 @@
+# Metrics_ID
+abcd2lqzgjk: |
+  histogram_quantile(
+  .99,
+  sum by (le, ingress)(
+    rate(
+      nginx_ingress_controller_response_duration_seconds_bucket{
+        ingress =~ ".+"
+      }[1m]
+    )
+  )
+  ) * 1000

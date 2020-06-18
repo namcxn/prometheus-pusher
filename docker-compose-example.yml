@@ -1,0 +1,10 @@
+version: '3'
+services:
+  prometheus-pusher:
+    image: prometheus-pusher:latest
+    hostname: prometheus-pusher
+    environment:
+      SYSTEMMETRIC__PROM_URL: https://localhost
+      SYSTEMMETRIC__PAGE_URL: https://api.statuspage.io
+      SYSTEMMETRIC__PAGE_TOKEN: xxxxxxx
+      SYSTEMMETRIC__PAGE_ID: xxxxxxxxx
