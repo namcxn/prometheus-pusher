@@ -8,3 +8,6 @@ services:
       SYSTEMMETRIC__PAGE_URL: https://api.statuspage.io
       SYSTEMMETRIC__PAGE_TOKEN: xxxxxxx
       SYSTEMMETRIC__PAGE_ID: xxxxxxxxx
+    volumes:
+      - ./queries.yaml:/app/queries.yaml
+      - ./config.yaml:/app/config.yaml
