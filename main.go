@@ -30,7 +30,7 @@ var (
 	metricInterval  = flag.Duration("i", 30*time.Second, "Metric push interval")
 
 	// logger     = log.With(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), "caller", log.DefaultCaller)
-  log = logger.GetLogger("push-status-page")
+        log = logger.GetLogger("push-status-page")
 	httpClient = &http.Client{}
 )
 
