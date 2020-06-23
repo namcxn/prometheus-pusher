@@ -30,10 +30,9 @@ var (
 	metricInterval  = flag.Duration("i", 30*time.Second, "Metric push interval")
 
 	// logger     = log.With(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), "caller", log.DefaultCaller)
-	log = logger.GetLogger("push-status-page")
+	log        = logger.GetLogger("push-status-page")
 	httpClient = &http.Client{}
 )
-
 
 func main() {
 	flag.Parse()
@@ -46,10 +45,11 @@ func main() {
 		log.Infof("msg", "Couldn't parse config file", "error", err.Error())
 	}
 
-	prometheusURL := fmt.Sprintf(config.Config.Systemmetric.Prometheusurl)
+	// prometheusURL := fmt.Sprintf(config.Config.Systemmetric.Prometheusurl)
 
 	// client, err := api.NewClient(api.Config{Address: *prometheusURL})
-	client, err := api.NewClient(api.Config{Address: prometheusURL})
+	client, err := api.NewClient(api.Config{Address: config.Config.Systemmetric.Prometheusurl})
+
 	if err != nil {
 		log.Infof("msg", "Couldn't create Prometheus client", "error", err.Error())
 	}
@@ -96,6 +96,11 @@ func sendStatusPage(ts time.Time, metricID string, value float64) error {
 	}
 	req.Header.Set("Authorization", "OAuth "+config.Config.Systemmetric.Statuspagetoken)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	req = req.WithContext(ctx)
+
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return err
