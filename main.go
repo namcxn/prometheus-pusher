@@ -78,6 +78,7 @@ func main() {
 			value := vec[0].Value
 			if "NaN" == value.String() {
 				log.Infof("msg", "Expected query to return", value)
+				value = 0
 				continue
 			}
 
