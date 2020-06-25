@@ -27,7 +27,7 @@ type queryConfig map[string]string
 
 var (
 	queryConfigFile = flag.String("c", "queries.yaml", "Query config file")
-	metricInterval  = flag.Duration("i", 30*time.Second, "Metric push interval")
+	metricInterval  = flag.Duration("i", 10*time.Second, "Metric push interval")
 
 	// logger     = log.With(log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr)), "caller", log.DefaultCaller)
 	log        = logger.GetLogger("push-status-page")
@@ -68,13 +68,19 @@ func main() {
 			if len(warnings) > 0 {
 				fmt.Printf("Warnings: %v\n", warnings)
 			}
+
 			vec := resp.(model.Vector)
 			if l := vec.Len(); l != 1 {
 				log.Infof("msg", "Expected query to return single value", "samples", l)
 				continue
 			}
 
-			log.Infof("metricID", metricID, "resp", vec[0].Value)
+			if value := vec[0].Value; value.String() == "NaN" {
+				log.Infof("msg", "Expected query to return", value)
+				continue
+			}
+
+			log.Infof(metricID, vec[0].Value)
 			if err := sendStatusPage(ts, metricID, float64(vec[0].Value)); err != nil {
 				log.Infof("msg", "Couldn't send metric to Statuspage", "error", err.Error())
 				continue
