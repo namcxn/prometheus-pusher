@@ -4,3 +4,4 @@ docker-compose.yml
 *.swp
 vendor/
 .idea
+prometheus-pusher

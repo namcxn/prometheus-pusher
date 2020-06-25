@@ -75,13 +75,14 @@ func main() {
 				continue
 			}
 
-			if value := vec[0].Value; value.String() == "NaN" {
+			value := vec[0].Value
+			if "NaN" == value.String() {
 				log.Infof("msg", "Expected query to return", value)
 				continue
 			}
 
-			log.Infof(metricID, vec[0].Value)
-			if err := sendStatusPage(ts, metricID, float64(vec[0].Value)); err != nil {
+			log.Infof(metricID, value)
+			if err := sendStatusPage(ts, metricID, float64(value)); err != nil {
 				log.Infof("msg", "Couldn't send metric to Statuspage", "error", err.Error())
 				continue
 			}
