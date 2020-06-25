@@ -10,7 +10,7 @@ go build
 ```
 - Docker
 ```
-....
+docker pull namcx/prometheus-pusher
 ```
 
 - Config
