@@ -79,7 +79,7 @@ func main() {
 			if "NaN" == value.String() {
 				log.Infof("msg", "Expected query to return", value)
 				value = 0
-				continue
+				// continue
 			}
 
 			log.Infof(metricID, value)
